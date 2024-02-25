@@ -5,59 +5,76 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
-    <h1>User Management</h1>
+    <div class="container">
+        <h1 class="mt-5 text-center">User Management For Send Weather Info</h1>
 
-    <table border="1">
-        <tr>
-            <th>Name</th>
-            <th>City</th>
-            <th>Country</th>
-            <th>Blocked</th>
-            <th>Action</th>
-        </tr>
-        <% users.forEach(user=> { %>
-            <tr>
-                <td>
-                    <%= user.name %>
-                </td>
-                <td>
-                    <%= user.city %>
-                </td>
-                <td>
-                    <%= user.country %>
-                </td>
-                <td>
-                    <%= user.block ? 'Yes' : 'No' %>
-                </td>
-                <td>
-                    <form action="/admin/block-user" method="post">
-                        <input type="hidden" name="userId" value="<%= user._id %>">
-                        <select name="block">
-                            <option value="true" <% if (user.block) { %> selected <% } %>>Block</option>
-                            <option value="false" <% if (!user.block) { %> selected <% } %>>Unblock</option>
-                        </select>
-                        <button type="submit">Update</button>
-                    </form>
-                </td>
-            </tr>
-            <% }); %>
-    </table>
+        <table class="table mt-3">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Chat ID</th>
+                    <th>Name</th>
+                    <th>City</th>
+                    <th>Country</th>
+                    <th>Blocked</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% users.forEach(user=> { %>
+                    <tr>
+                        <td>
+                            <%= user.chatId %>
+                        </td>
+                        <td>
+                            <%= user.name %>
+                        </td>
+                        <td>
+                            <%= user.city %>
+                        </td>
+                        <td>
+                            <%= user.country %>
+                        </td>
+                        <td>
+                            <%= user.block ? 'Yes' : 'No' %>
+                        </td>
+                        <td>
+                            <form action="/admin/block-user" method="post" class="d-flex align-items-center">
+                                <input type="hidden" name="userId" value="<%= user._id %>">
+                                <select name="block" class="form-control mr-2">
+                                    <option value="true" <% if (user.block) { %> selected <% } %>>Block</option>
+                                    <option value="false" <% if (!user.block) { %> selected <% } %>>Unblock</option>
+                                </select>
+                                <button type="submit" class="btn btn-primary">Update</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% }); %>
+            </tbody>
+        </table>
 
-    <h2>Delete User</h2>
-    <form action="/admin/delete-user" method="post">
-        <label for="userId">Select User:</label>
-        <select name="userId">
-            <% users.forEach(user=> { %>
-                <option value="<%= user._id %>">
-                    <%= user.name %> - <%= user.city %>, <%= user.country %>
-                </option>
-                <% }); %>
-        </select>
-        <button type="submit">Delete</button>
-    </form>
+        <div class="container">
+            <h2>Delete User</h2>
+            <ul class="list-group">
+                <% users.forEach(user=> { %>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <%= user.chatId %> - <%= user.name %> - <%= user.city %>, <%= user.country %>
+                                    <form action="/admin/delete-user" method="post">
+                                        <input type="hidden" name="userId" value="<%= user._id %>">
+                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                    </form>
+                    </li>
+                    <% }); %>
+            </ul>
+        </div>
+
+
+        <!-- Bootstrap JS (optional) -->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 
 </html>
