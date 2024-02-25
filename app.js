@@ -2,6 +2,7 @@ const { Telegraf } = require('telegraf');
 const cron = require('node-cron');
 require("dotenv").config({ path: "./config/.env" });
 const bot = new Telegraf(process.env.TELE_BOT_TOKEN);
+require("./routes/adminRoute");
 
 // MongoDB setup
 require("./database/connection/connection");
@@ -19,7 +20,7 @@ const userStates = {};
 // Function to send weather updates to users
 async function sendWeatherUpdates() {
     try {
-        const users = await User.find();
+        const users = await User.find({block: false});
         for (const user of users) {
             const weatherData = await fetch_Weather_data(user.city, user.country);
             if (weatherData) {
